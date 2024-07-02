@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/kesonan/xlib/pkg/converter/anyx"
-	"github.com/kesonan/xlib/pkg/converter/internal/constx"
+	"github.com/kesonan/xlib/pkg/converter/constx"
 )
 
 func Convert(s string, toType string) (string, error) {

@@ -6,8 +6,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kesonan/xlib/pkg/converter/internal/constx"
-	"github.com/kesonan/xlib/pkg/converter/internal/vars"
+	"github.com/kesonan/xlib/pkg/converter/constx"
+	"github.com/kesonan/xlib/pkg/converter/vars"
 	"github.com/kesonan/xlib/pkg/list"
 	"github.com/kesonan/xlib/pkg/sortmap"
 	"github.com/kesonan/xlib/pkg/stringx"

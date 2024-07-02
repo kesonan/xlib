@@ -7,9 +7,9 @@ import (
 	"strings"
 
 	"github.com/iancoleman/strcase"
-	"github.com/kesonan/xlib/pkg/converter/internal/constx"
-	"github.com/kesonan/xlib/pkg/converter/internal/vars"
+	"github.com/kesonan/xlib/pkg/converter/constx"
 	types2 "github.com/kesonan/xlib/pkg/converter/types"
+	"github.com/kesonan/xlib/pkg/converter/vars"
 	"github.com/kesonan/xlib/pkg/parser/api/format"
 	"github.com/kesonan/xlib/pkg/sortmap"
 	"github.com/kesonan/xlib/pkg/writer"

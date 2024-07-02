@@ -1,6 +1,6 @@
 package vars
 
-import "github.com/kesonan/xlib/pkg/converter/internal/constx"
+import "github.com/kesonan/xlib/pkg/converter/constx"
 
 var (
 	MayTimeColumn = []string{"CREATEDAT", "CREATEAT", "UPDATEDAT", "UPDATEdAT", "DELETEDAT", "DELETEAT", "DATE", "TIME"}
