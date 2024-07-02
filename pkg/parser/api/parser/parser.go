@@ -2,13 +2,14 @@ package parser
 
 import (
 	"fmt"
-	"github.com/kesonan/xlib/pkg/parser/api/ast"
-	"github.com/kesonan/xlib/pkg/parser/api/scanner"
-	"github.com/kesonan/xlib/pkg/parser/api/token"
 	"log"
 	"path/filepath"
 	"reflect"
 	"strings"
+
+	"github.com/kesonan/xlib/pkg/parser/api/ast"
+	"github.com/kesonan/xlib/pkg/parser/api/scanner"
+	"github.com/kesonan/xlib/pkg/parser/api/token"
 )
 
 const (

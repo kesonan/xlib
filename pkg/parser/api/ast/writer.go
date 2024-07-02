@@ -3,12 +3,12 @@ package ast
 import (
 	"bytes"
 	"fmt"
-	"github.com/kesonan/xlib/pkg/stringx"
 	"io"
 	"strings"
 	"text/tabwriter"
 
 	"github.com/kesonan/xlib/pkg/parser/api/token"
+	"github.com/kesonan/xlib/pkg/stringx"
 )
 
 const (

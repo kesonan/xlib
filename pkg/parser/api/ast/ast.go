@@ -2,10 +2,11 @@ package ast
 
 import (
 	"fmt"
-	"github.com/kesonan/xlib/pkg/parser/api/token"
-	"github.com/kesonan/xlib/pkg/stringx"
 	"io"
 	"strings"
+
+	"github.com/kesonan/xlib/pkg/parser/api/token"
+	"github.com/kesonan/xlib/pkg/stringx"
 )
 
 // Node represents a node in the AST.

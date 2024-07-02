@@ -2,9 +2,10 @@ package format
 
 import (
 	"bytes"
-	"github.com/kesonan/xlib/pkg/parser/api/parser"
 	"io"
 	"os"
+
+	"github.com/kesonan/xlib/pkg/parser/api/parser"
 )
 
 // File formats the api file.

@@ -2,6 +2,7 @@ package token
 
 import (
 	"fmt"
+
 	"github.com/kesonan/xlib/pkg/parser/api/placeholder"
 	"github.com/kesonan/xlib/pkg/stringx"
 )

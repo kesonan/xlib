@@ -1,9 +1,10 @@
 package ast
 
 import (
+	"strings"
+
 	"github.com/kesonan/xlib/pkg/parser/api/token"
 	"github.com/kesonan/xlib/pkg/stringx"
-	"strings"
 )
 
 // CommentGroup represents a list of comments.
