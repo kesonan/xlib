@@ -3,13 +3,12 @@ package anyx
 import (
 	"bytes"
 	"fmt"
+	types2 "github.com/kesonan/xlib/pkg/converter/types"
 	goformat "go/format"
 	"strings"
 
 	"github.com/iancoleman/strcase"
 	"github.com/kesonan/xlib/pkg/converter/internal/constx"
-	"github.com/kesonan/xlib/pkg/converter/internal/types"
-	types2 "github.com/kesonan/xlib/pkg/converter/internal/types"
 	"github.com/kesonan/xlib/pkg/converter/internal/vars"
 	"github.com/kesonan/xlib/pkg/parser/api/format"
 	"github.com/kesonan/xlib/pkg/sortmap"
@@ -95,7 +94,7 @@ func ConvertToSQL(v any) (string, error) {
 		return nil
 	})
 
-	if types.MayContainsPrimary(sm) {
+	if types2.MayContainsPrimary(sm) {
 		w.WriteWithIndentStringln("PRIMARY KEY (`id`)")
 	} else {
 		w.UndoNewLine()
@@ -148,13 +147,13 @@ func ConvertToGoStruct(v any, root bool) (string, error) {
 
 func convertGoStructMemberType(value any) (string, error) {
 	switch {
-	case types.IsInteger(value):
+	case types2.IsInteger(value):
 		return "int64", nil
-	case types.IsFloat(value):
+	case types2.IsFloat(value):
 		return "float64", nil
-	case types.IsBool(value):
+	case types2.IsBool(value):
 		return "bool", nil
-	case types.IsString(value):
+	case types2.IsString(value):
 		return "string", nil
 	default:
 		_, ok := value.(map[string]any)
@@ -290,19 +289,19 @@ type protobufMemberResult struct {
 func convertProtobufMemberType(indentCount int, key string, value any) (*protobufMemberResult, error) {
 	resp := new(protobufMemberResult)
 	switch {
-	case types.IsInteger(value):
+	case types2.IsInteger(value):
 		resp.TypeExpr = "int64"
 		resp.TypeName = "int64"
 		return resp, nil
-	case types.IsFloat(value):
+	case types2.IsFloat(value):
 		resp.TypeExpr = "double"
 		resp.TypeName = "double"
 		return resp, nil
-	case types.IsBool(value):
+	case types2.IsBool(value):
 		resp.TypeExpr = "bool"
 		resp.TypeName = "bool"
 		return resp, nil
-	case types.IsString(value):
+	case types2.IsString(value):
 		resp.TypeExpr = "string"
 		resp.TypeName = "string"
 		return resp, nil
@@ -449,19 +448,19 @@ type goctlAPIMemberResult struct {
 func convertGoctlAPIMemberType(indentCount int, parent, key string, value any) (*goctlAPIMemberResult, error) {
 	resp := new(goctlAPIMemberResult)
 	switch {
-	case types.IsInteger(value):
+	case types2.IsInteger(value):
 		resp.TypeExpr = "int64"
 		resp.TypeName = "int64"
 		return resp, nil
-	case types.IsFloat(value):
+	case types2.IsFloat(value):
 		resp.TypeExpr = "double"
 		resp.TypeName = "double"
 		return resp, nil
-	case types.IsBool(value):
+	case types2.IsBool(value):
 		resp.TypeExpr = "bool"
 		resp.TypeName = "bool"
 		return resp, nil
-	case types.IsString(value):
+	case types2.IsString(value):
 		resp.TypeExpr = "string"
 		resp.TypeName = "string"
 		return resp, nil
