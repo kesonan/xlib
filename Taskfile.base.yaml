@@ -1,0 +1,58 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  MODULE: github.com/kesonan/xlib
+  COVERPKG: ./pkg/...
+  GOARCH: amd64
+  TEST_FLAGS: -gcflags=all=-l
+
+tasks:
+  lint:
+    deps:
+      - setup:golangci-lint
+    cmds:
+      - ./bin/golangci-lint run {{.CLI_ARGS}}
+
+  lint:fast:
+    cmds:
+      - task: lint
+        vars:
+          CLI_ARGS: --fast {{.CLI_ARGS}}
+
+  goimportx:
+    deps:
+      - setup:goimportx
+    cmds:
+      - |
+        for file in {{.CLI_ARGS}}
+        do
+          if [ -f "$file" ];then
+            ./bin/goimportx --file $file -w
+          fi
+        done
+  setup:golangci-lint:
+    cmds:
+      - >-
+        curl -SL
+        https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh
+        | sh -s v1.53.3
+    status:
+      - test -f ./bin/golangci-lint
+      - ./bin/golangci-lint --version | grep -q ' 1.53.3 '
+  setup:goimportx:
+    cmds:
+      - GOBIN=`pwd`/bin go install github.com/anqiansong/goimportx@main
+    status:
+      - test -f ./bin/goimportx
+    sources:
+      - ./Taskfile.base.yaml
+  setup:local:
+    cmds:
+      - mkdir -p ./bin
+      - task: setup:golangci-lint
+      - task: setup:goimports
+      - task: setup:smrcptr
+      - task: setup:gotestsum
+      - task: setup:goimportshack

@@ -1,0 +1,23 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  MODULE: github.com/kesonan/xlib
+  COVERPKG: ./pkg/...
+  GOARCH: amd64
+  TEST_FLAGS: -gcflags=all=-l
+
+includes:
+  b:
+    taskfile: ./Taskfile.base.yaml
+    vars: # not support dynamic vars not, wait for https://github.com/go-task/task/issues/951 resolved
+      MODULE: github.com/kesonan/xlib
+      COVERPKG: ./pkg/...
+      GOARCH: amd64
+      TEST_FLAGS: -gcflags=all=-l
+
+tasks:
+  setup:
+    cmds:
+      - task: b:setup

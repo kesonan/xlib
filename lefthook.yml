@@ -1,0 +1,10 @@
+pre-commit:
+  commands:
+    goimportx:
+      glob: "*.go"
+      run: task b:goimportx -- {staged_files} && git add {staged_files}
+    lint:
+      glob: "*.go"
+      run: go vet ./... && git diff --staged > ./bin/tmp.patch && task b:lint:fast -- --new-from-patch ./bin/tmp.patch && git add {staged_files}
+    tidy:
+      run: go mod tidy && git add go.mod go.sum
