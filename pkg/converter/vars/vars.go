@@ -20,7 +20,7 @@ var (
 	ValidMapper = map[string][]string{
 		constx.TypeJSON: {constx.TypeGoStruct, constx.TypeProtoBuf, constx.TypeGoctlAPI, constx.TypeTOML, constx.TypeYAML, constx.TypeSQL},
 		constx.TypeSQL:  {constx.TypeJSON, constx.TypeGoStruct, constx.TypeProtoBuf, constx.TypeGoctlAPI, constx.TypeTOML, constx.TypeYAML},
-		constx.TypeTOML: {constx.TypeJSON, constx.TypeGoStruct, constx.TypeProtoBuf, constx.TypeGoctlAPI, constx.TypeYAML},
-		constx.TypeYAML: {constx.TypeJSON, constx.TypeGoStruct, constx.TypeProtoBuf, constx.TypeGoctlAPI, constx.TypeTOML},
+		constx.TypeTOML: {constx.TypeJSON, constx.TypeGoStruct, constx.TypeProtoBuf, constx.TypeGoctlAPI, constx.TypeYAML, constx.TypeSQL},
+		constx.TypeYAML: {constx.TypeJSON, constx.TypeGoStruct, constx.TypeProtoBuf, constx.TypeGoctlAPI, constx.TypeTOML, constx.TypeSQL},
 	}
 )

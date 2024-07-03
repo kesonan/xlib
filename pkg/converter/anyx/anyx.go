@@ -2,6 +2,7 @@ package anyx
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	goformat "go/format"
 	"strings"
@@ -17,14 +18,22 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func Convert(s string, toType string) (string, error) {
-	return s, nil
+func ConvertToJson(v any) (string, error) {
+	w := bytes.NewBuffer(nil)
+	encoder := json.NewEncoder(w)
+	encoder.SetIndent("", constx.Indent)
+	encoder.SetEscapeHTML(true)
+	err := encoder.Encode(v)
+	if err != nil {
+		return "", err
+	}
+	return w.String(), nil
 }
 
 func ConvertToToml(v any) (string, error) {
-	writer := bytes.NewBuffer(nil)
-	writer.WriteString(fmt.Sprintf("# %s\n\n", constx.HeaderText))
-	encoder := toml.NewEncoder(writer)
+	w := bytes.NewBuffer(nil)
+	w.WriteString(fmt.Sprintf("# %s\n\n", constx.HeaderText))
+	encoder := toml.NewEncoder(w)
 	encoder.SetIndentSymbol(constx.Indent)
 	encoder.SetIndentTables(true)
 	encoder.SetMarshalJsonNumbers(true)
@@ -32,19 +41,19 @@ func ConvertToToml(v any) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return writer.String(), nil
+	return w.String(), nil
 }
 
 func ConvertToYaml(v any) (string, error) {
-	writer := bytes.NewBuffer(nil)
-	writer.WriteString(fmt.Sprintf("# %s\n\n", constx.HeaderText))
-	encoder := yaml.NewEncoder(writer)
+	w := bytes.NewBuffer(nil)
+	w.WriteString(fmt.Sprintf("# %s\n\n", constx.HeaderText))
+	encoder := yaml.NewEncoder(w)
 	encoder.SetIndent(2)
 	err := encoder.Encode(v)
 	if err != nil {
 		return "", err
 	}
-	return writer.String(), nil
+	return w.String(), nil
 }
 
 func ConvertToSQL(v any) (string, error) {
