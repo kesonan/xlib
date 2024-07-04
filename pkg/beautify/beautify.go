@@ -3,6 +3,7 @@ package beautify
 import (
 	"bytes"
 	"encoding/json"
+
 	"github.com/kesonan/xlib/pkg/converter/constx"
 	"github.com/pelletier/go-toml/v2"
 	"gopkg.in/yaml.v3"
