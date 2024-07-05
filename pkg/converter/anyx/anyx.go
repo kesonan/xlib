@@ -10,7 +10,7 @@ import (
 	mxj "github.com/clbanning/mxj/v2"
 	"github.com/iancoleman/strcase"
 	"github.com/kesonan/xlib/pkg/converter/constx"
-	types2 "github.com/kesonan/xlib/pkg/converter/types"
+	"github.com/kesonan/xlib/pkg/converter/types"
 	"github.com/kesonan/xlib/pkg/converter/vars"
 	"github.com/kesonan/xlib/pkg/parser/api/format"
 	"github.com/kesonan/xlib/pkg/sortmap"
@@ -65,7 +65,7 @@ func ConvertToSQL(v any) (string, error) {
 
 	sm := sortmap.From(kv)
 	err := sm.Range(func(_ int, key string, value any) error {
-		if !types2.IsBasic(value) {
+		if !types.IsBasic(value) {
 			return fmt.Errorf("value must be basic type, got %T", v)
 		}
 		return nil
@@ -77,34 +77,36 @@ func ConvertToSQL(v any) (string, error) {
 	w := writer.New(constx.Indent)
 	w.Writef("-- %s\n\n", constx.HeaderText)
 	w.WriteStringln("CREATE TABLE IF NOT EXISTS `table_name` (")
-	if types2.MayContainsPrimary(sm) {
+	if types.MayContainsPrimary(sm) {
 		w.WriteWithIndentStringln("`id` int unsigned NOT NULL AUTO_INCREMENT,")
 		sm.Del(constx.MayIdColumn)
 	}
 
 	sm.Range(func(_ int, key string, value any) error {
-		tp, defaultValue, ok := types2.MaybeTimeType(key, value)
+		tp, defaultValue, ok := types.MaybeTimeType(key, value)
 		if !ok {
-			if types2.IsInteger(value) {
+			if types.IsInteger(value) {
 				tp = "int"
-			} else if types2.IsFloat(value) {
+			} else if types.IsFloat(value) {
 				tp = "float64"
-			} else if types2.IsString(value) {
+			} else if types.IsString(value) {
 				tp = "string"
-			} else if types2.IsBool(value) {
+			} else if types.IsBool(value) {
 				tp = "bool"
+			} else if types.IsTime(value) {
+				tp = "time.Time"
 			} else {
 				return fmt.Errorf("value must be basic type, got %T", v)
 			}
 			defaultValue = vars.SqlDefault[tp]
-			tp = vars.SqlType[tp]
+			tp = vars.SqlTypeFromGo[tp]
 		}
 		w.WriteWithIndentStringf("`%s` %s NOT NULL DEFAULT %s,", key, tp, defaultValue)
 		w.NewLine()
 		return nil
 	})
 
-	if types2.MayContainsPrimary(sm) {
+	if types.MayContainsPrimary(sm) {
 		w.WriteWithIndentStringln("PRIMARY KEY (`id`)")
 	} else {
 		w.UndoNewLine()
@@ -157,13 +159,15 @@ func ConvertToGoStruct(v any, root bool) (string, error) {
 
 func convertGoStructMemberType(value any) (string, error) {
 	switch {
-	case types2.IsInteger(value):
+	case types.IsInteger(value):
 		return "int64", nil
-	case types2.IsFloat(value):
+	case types.IsFloat(value):
 		return "float64", nil
-	case types2.IsBool(value):
+	case types.IsBool(value):
 		return "bool", nil
-	case types2.IsString(value):
+	case types.IsTime(value):
+		return "time.Time", nil
+	case types.IsString(value):
 		return "string", nil
 	default:
 		_, ok := value.(map[string]any)
@@ -299,19 +303,23 @@ type protobufMemberResult struct {
 func convertProtobufMemberType(indentCount int, key string, value any) (*protobufMemberResult, error) {
 	resp := new(protobufMemberResult)
 	switch {
-	case types2.IsInteger(value):
+	case types.IsInteger(value):
 		resp.TypeExpr = "int64"
 		resp.TypeName = "int64"
 		return resp, nil
-	case types2.IsFloat(value):
+	case types.IsFloat(value):
 		resp.TypeExpr = "double"
 		resp.TypeName = "double"
 		return resp, nil
-	case types2.IsBool(value):
+	case types.IsBool(value):
 		resp.TypeExpr = "bool"
 		resp.TypeName = "bool"
 		return resp, nil
-	case types2.IsString(value):
+	case types.IsTime(value):
+		resp.TypeExpr = "string"
+		resp.TypeName = "string"
+		return resp, nil
+	case types.IsString(value):
 		resp.TypeExpr = "string"
 		resp.TypeName = "string"
 		return resp, nil
@@ -458,19 +466,23 @@ type goctlAPIMemberResult struct {
 func convertGoctlAPIMemberType(indentCount int, parent, key string, value any) (*goctlAPIMemberResult, error) {
 	resp := new(goctlAPIMemberResult)
 	switch {
-	case types2.IsInteger(value):
+	case types.IsInteger(value):
 		resp.TypeExpr = "int64"
 		resp.TypeName = "int64"
 		return resp, nil
-	case types2.IsFloat(value):
+	case types.IsFloat(value):
 		resp.TypeExpr = "double"
 		resp.TypeName = "double"
 		return resp, nil
-	case types2.IsBool(value):
+	case types.IsBool(value):
 		resp.TypeExpr = "bool"
 		resp.TypeName = "bool"
 		return resp, nil
-	case types2.IsString(value):
+	case types.IsTime(value):
+		resp.TypeExpr = "string"
+		resp.TypeName = "string"
+		return resp, nil
+	case types.IsString(value):
 		resp.TypeExpr = "string"
 		resp.TypeName = "string"
 		return resp, nil

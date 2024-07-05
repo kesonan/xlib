@@ -134,6 +134,11 @@ func IsBool(v any) bool {
 	return ok
 }
 
+func IsTime(v any) bool {
+	_, ok := v.(time.Time)
+	return ok
+}
+
 func IsString(v any) bool {
 	_, ok := v.(string)
 	return ok

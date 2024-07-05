@@ -1,16 +1,21 @@
 package xmlx
 
 import (
-	"encoding/xml"
+	"bytes"
 	"fmt"
 
+	mxj "github.com/clbanning/mxj/v2"
 	"github.com/kesonan/xlib/pkg/converter/anyx"
 	"github.com/kesonan/xlib/pkg/converter/constx"
 )
 
 func Convert(s, toType string) (string, error) {
-	var v any
-	err := xml.Unmarshal([]byte(s), &v)
+	mv, err := mxj.NewMapXmlReader(bytes.NewBufferString(s), true)
+	if err != nil {
+		return "", err
+	}
+	var v map[string]any
+	err = mv.Struct(&v)
 	if err != nil {
 		return "", err
 	}
@@ -25,7 +30,16 @@ func Convert(s, toType string) (string, error) {
 	case constx.TypeYAML:
 		return anyx.ConvertToYaml(v)
 	case constx.TypeSQL:
-		return anyx.ConvertToSQL(v)
+		var value any
+		for _, item := range v {
+			value = item
+			break
+		}
+		_, ok := value.(map[string]any)
+		if !ok {
+			return "", fmt.Errorf("invalid xml data")
+		}
+		return anyx.ConvertToSQL(value)
 	case constx.TypeGoctlAPI:
 		tp, _, err := anyx.ConvertToGoctlAPI(0, "", "GeneratedResponse", v, true)
 		return tp, err
