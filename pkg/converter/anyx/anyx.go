@@ -7,6 +7,7 @@ import (
 	goformat "go/format"
 	"strings"
 
+	mxj "github.com/clbanning/mxj/v2"
 	"github.com/iancoleman/strcase"
 	"github.com/kesonan/xlib/pkg/converter/constx"
 	types2 "github.com/kesonan/xlib/pkg/converter/types"
@@ -531,4 +532,30 @@ func convertGoctlAPIMemberType(indentCount int, parent, key string, value any) (
 		resp.ExternalTypeExpr = append(resp.ExternalTypeExpr, result.ExternalTypeExpr...)
 		return resp, nil
 	}
+}
+
+func ConvertToXml(v any) (string, error) {
+	kv, ok := v.(map[string]interface{})
+	if !ok {
+		return "", fmt.Errorf("input must be object, got %T", v)
+	}
+
+	m := mxj.Map(kv)
+	xmlObj, err := m.Xml()
+	if err != nil {
+		return "", err
+	}
+
+	mv, err := mxj.NewMapXmlReader(bytes.NewBuffer(xmlObj))
+	if err != nil {
+		return "", err
+	}
+
+	w := bytes.NewBufferString(`<?xml version="1.0" encoding="UTF-8"?>`)
+	w.WriteByte('\n')
+	err = mv.XmlIndentWriter(w, "", "  ")
+	if err != nil {
+		return "", err
+	}
+	return w.String(), nil
 }

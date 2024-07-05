@@ -1,25 +1,25 @@
-package tomlx
+package xmlx
 
 import (
-	"errors"
+	"encoding/xml"
 	"fmt"
 
 	"github.com/kesonan/xlib/pkg/converter/anyx"
 	"github.com/kesonan/xlib/pkg/converter/constx"
-	"github.com/pelletier/go-toml/v2"
 )
 
-func Convert(s string, toType string) (string, error) {
+func Convert(s, toType string) (string, error) {
 	var v any
-	err := toml.Unmarshal([]byte(s), &v)
-	var syntaxErr *toml.DecodeError
-	if err != nil && errors.As(err, &syntaxErr) {
-		return "", errors.New(syntaxErr.String())
+	err := xml.Unmarshal([]byte(s), &v)
+	if err != nil {
+		return "", err
 	}
 
 	switch toType {
 	case constx.TypeJSON:
 		return anyx.ConvertToJson(v)
+	case constx.TypeTOML:
+		return anyx.ConvertToToml(v)
 	case constx.TypeGoStruct:
 		return anyx.ConvertToGoStruct(v, true)
 	case constx.TypeYAML:
@@ -32,8 +32,6 @@ func Convert(s string, toType string) (string, error) {
 	case constx.TypeProtoBuf:
 		val, _, err := anyx.ConvertToProtoBuf(0, "MessageResponse", v, true)
 		return val, err
-	case constx.TypeXml:
-		return anyx.ConvertToXml(v)
 	default:
 		return "", fmt.Errorf("invalid to type: %s", toType)
 	}

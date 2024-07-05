@@ -20,4 +20,5 @@ const (
 	TypeProtoBuf = "PROTOBUF"
 	TypeGoctlAPI = "GOCTL API"
 	TypeGoStruct = "GO STRUCT"
+	TypeXml      = "XML"
 )

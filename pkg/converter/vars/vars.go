@@ -18,9 +18,10 @@ var (
 	}
 
 	ValidMapper = map[string][]string{
-		constx.TypeJSON: {constx.TypeGoStruct, constx.TypeProtoBuf, constx.TypeGoctlAPI, constx.TypeTOML, constx.TypeYAML, constx.TypeSQL},
-		constx.TypeSQL:  {constx.TypeJSON, constx.TypeGoStruct, constx.TypeProtoBuf, constx.TypeGoctlAPI, constx.TypeTOML, constx.TypeYAML},
-		constx.TypeTOML: {constx.TypeJSON, constx.TypeGoStruct, constx.TypeProtoBuf, constx.TypeGoctlAPI, constx.TypeYAML, constx.TypeSQL},
-		constx.TypeYAML: {constx.TypeJSON, constx.TypeGoStruct, constx.TypeProtoBuf, constx.TypeGoctlAPI, constx.TypeTOML, constx.TypeSQL},
+		constx.TypeJSON: {constx.TypeGoStruct, constx.TypeProtoBuf, constx.TypeGoctlAPI, constx.TypeTOML, constx.TypeYAML, constx.TypeSQL, constx.TypeXml},
+		constx.TypeSQL:  {constx.TypeJSON, constx.TypeGoStruct, constx.TypeProtoBuf, constx.TypeGoctlAPI, constx.TypeTOML, constx.TypeYAML, constx.TypeXml},
+		constx.TypeTOML: {constx.TypeJSON, constx.TypeGoStruct, constx.TypeProtoBuf, constx.TypeGoctlAPI, constx.TypeYAML, constx.TypeSQL, constx.TypeXml},
+		constx.TypeYAML: {constx.TypeJSON, constx.TypeGoStruct, constx.TypeProtoBuf, constx.TypeGoctlAPI, constx.TypeTOML, constx.TypeSQL, constx.TypeXml},
+		constx.TypeXml:  {constx.TypeJSON, constx.TypeGoStruct, constx.TypeProtoBuf, constx.TypeGoctlAPI, constx.TypeYAML, constx.TypeTOML, constx.TypeSQL},
 	}
 )

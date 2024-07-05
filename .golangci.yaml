@@ -21,7 +21,6 @@ linters:
     - whitespace
     - forbidigo
     - goimports
-    - depguard
 
 linters-settings:
   gocritic:

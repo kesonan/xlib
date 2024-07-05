@@ -32,6 +32,8 @@ func Convert(s string, toType string) (string, error) {
 	case constx.TypeProtoBuf:
 		val, _, err := anyx.ConvertToProtoBuf(0, "MessageResponse", v, true)
 		return val, err
+	case constx.TypeXml:
+		return anyx.ConvertToXml(v)
 	default:
 		return "", fmt.Errorf("invalid to type: %s", toType)
 	}
