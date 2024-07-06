@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 
+	"github.com/clbanning/mxj/v2"
 	"github.com/kesonan/xlib/pkg/converter/constx"
 	"github.com/pelletier/go-toml/v2"
 	"gopkg.in/yaml.v3"
@@ -56,7 +57,21 @@ func TOML(s string) string {
 	encoder.SetMarshalJsonNumbers(true)
 	err = encoder.Encode(v)
 	if err != nil {
-		return ""
+		return s
 	}
 	return writer.String()
+}
+
+func Xml(s string) string {
+	mv, err := mxj.NewMapXmlReader(bytes.NewBufferString(s), true)
+	if err != nil {
+		return s
+	}
+	w := bytes.NewBufferString(`<?xml version="1.0" encoding="UTF-8"?>`)
+	w.WriteByte('\n')
+	err = mv.XmlIndentWriter(w, "", constx.Indent)
+	if err != nil {
+		return s
+	}
+	return w.String()
 }
